@@ -10,7 +10,7 @@ The `ai/maturity-ladder` submodule has a broken skill (`graduation-suggest`) tha
 - Lightly touch skill content to avoid Claude-specific tool references where possible (portable-by-default)
 - Stub environment-detection branching in setup skill (detect CLAUDE.md vs AGENTS.md) as a no-op path for future cross-tool support
 - The submodule remains a git submodule for project-scoped installs; plugin packaging is additive
-- Move submodule from `ai/maturity-ladder` to `.claude/skills/aiml/` — the canonical plugin install location
+- Remove `ai/maturity-ladder` submodule from originating project; plugin is now distributed via marketplace (`claude plugin install`)
 
 ## Capabilities
 
@@ -24,7 +24,7 @@ The `ai/maturity-ladder` submodule has a broken skill (`graduation-suggest`) tha
 
 ## Impact
 
-- **Submodule location**: Moves from `ai/maturity-ladder/` to `.claude/skills/aiml/`
+- **Distribution**: Moves from `ai/maturity-ladder/` submodule to marketplace-based distribution (`claude plugin install`). The `.claude/skills/` path was abandoned due to a trust-gate bug (trust dialog never re-presents after dismissal)
 - **Parent project CLAUDE.md**: Path references updated to new location
 - **ADR-0001**: Superseded by new ADR-0011 (plugin over ai/ namespace)
 - **Existing consumers**: Must re-install via `claude plugin install` (or update submodule path)

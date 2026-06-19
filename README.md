@@ -13,12 +13,15 @@ A Claude Code plugin that directs AI coding assistants to **graduate work away f
 
 ### Claude Code
 
-Install from the repo:
+Register the marketplace and install:
 ```bash
-claude plugin install tychay/ai-maturity-ladder
+claude plugin marketplace add tychay/ai-maturity-ladder
+claude plugin install aiml
 ```
 
-Then run the setup skill to configure your project:
+### After install
+
+Run the setup skill to configure your project:
 ```
 /aiml:setup
 ```
@@ -42,15 +45,17 @@ After setup, the AI reads `CLAUDE-RULES.md` at session start for concise operati
 
 ## Development
 
-For contributors developing this plugin:
+Assumes the local marketplace is already registered and the plugin is installed
+with the cache symlinked to this source directory.
 
-```bash
-# Test locally without installing
-claude --plugin-dir ./path/to/ai-maturity-ladder
+**Dev loop:**
 
-# Validate the plugin structure
-claude plugin validate ./path/to/ai-maturity-ladder
-```
+1. Edit source files directly in this directory (symlinked cache means no reinstall or version bump needed locally)
+2. Pick up changes: **Cmd-Shift-P > "Developer: Reload Window"** (VSCode) or relaunch the panel
+3. Validate structure: `claude plugin validate ./path/to/ai-maturity-ladder`
+4. For CLI-only testing, `claude --plugin-dir ./path/to/ai-maturity-ladder` also works (but does NOT apply in VSCode extension)
+
+**Publishing changes to others:** Bump `version` in `plugin.json` before pushing — consumers pick up new versions via `claude plugin update`.
 
 ## Updating
 

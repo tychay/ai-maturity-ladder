@@ -27,14 +27,14 @@ ai/maturity-ladder/
 - Preserve submodule-as-git-repo portability (still clonable, still works without plugin system)
 - Design skills to be lightly tool-agnostic (no hard Claude-specific tool references in prose)
 - Stub environment-detection in setup skill for future cross-tool support
-- Move to canonical plugin location (`.claude/skills/aiml/`)
+- Distribute via marketplace (`claude plugin install`); remove submodule from originating project
 
 **Non-Goals:**
 - Building actual OpenCode plugin support (just awareness in design)
 - Migrating the parent project from CLAUDE.md to AGENTS.md
 - Changing the maturity-ladder philosophy content or rules
 - Modularizing evaluators (that's the openspec-adr plugin, separate change)
-- Marketplace publishing (future — just ensure the structure supports it)
+- Remote marketplace publishing (local marketplace only; remote registry is future)
 
 ## Decisions
 
@@ -75,13 +75,13 @@ Environment detection for non-Claude paths stubs out with "not yet supported."
 - Use relative path references (`../../assets/ai-maturity-ladder.md`)
 - Avoid referencing Claude-specific tools in the skill prose
 
-### D5: Submodule moves to `.claude/skills/aiml/`
+### D5: Plugin distributed via marketplace (not `.claude/skills/`)
 
-The `ai/` namespace was a bespoke convention predating the plugin system. Now that plugins exist and consumers install to `.claude/skills/`, our development submodule goes there too — it auto-loads as `aiml@skills-dir` with zero install step. ADR-0001 is superseded by ADR-0011.
+The original plan was to move the submodule to `.claude/skills/aiml/` for auto-loading. This hit a trust-gate bug in Claude Code: the trust dialog never re-presents after dismissal, making plugins at `.claude/skills/` permanently unloadable. The actual resolution: the `ai/maturity-ladder` submodule was removed from the originating project. The plugin is distributed via marketplace (`claude plugin install`) using a local marketplace with symlinked cache for development. The repo remains a standalone git repo consumable as a raw submodule for projects that want path-based references — but NOT at `.claude/skills/` due to the trust-gate bug. ADR-0001 is superseded by ADR-0011.
 
 ### D6: ADR-0010 path resolution adapts
 
-ADR-0010 says CLAUDE.md references by file path. The setup skill resolves the correct path at install time based on where the plugin actually lives.
+ADR-0010 says CLAUDE.md references by file path. The setup skill resolves the correct path at install time based on where the plugin actually lives. With marketplace distribution, the plugin cache location is resolved at runtime rather than being a fixed submodule path.
 
 ## Risks / Trade-offs
 

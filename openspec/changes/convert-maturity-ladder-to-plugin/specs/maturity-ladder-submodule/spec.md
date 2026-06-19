@@ -11,12 +11,17 @@ The plugin SHALL contain `skills/graduation-suggest/SKILL.md` that instructs the
 - **WHEN** the coding agent observes repeated actions that match graduation criteria
 - **THEN** it suggests graduating per the ladder levels described in assets/ai-maturity-ladder.md
 
-### Requirement: Plugin lives at .claude/skills/aiml/
-The development submodule SHALL be located at `.claude/skills/aiml/` which is the canonical plugin install location. It auto-loads as `aiml@skills-dir` with no separate install step needed.
+### Requirement: Plugin distributed via marketplace
+The plugin SHALL be installable via `claude plugin install` from a local or remote marketplace. The `.claude/skills/aiml` submodule was removed from the originating project due to a trust-gate bug (trust dialog never re-presents after dismissal, making plugins at `.claude/skills/` permanently unloadable).
 
-#### Scenario: Project is cloned fresh
-- **WHEN** a developer clones the project and runs `git submodule update --init`
-- **THEN** the `.claude/skills/aiml/` directory is populated and the plugin auto-loads
+#### Scenario: Plugin is installed via marketplace
+- **WHEN** a developer runs `claude plugin install aiml` (or equivalent marketplace command)
+- **THEN** the plugin is installed to the local plugin cache and its skills are discoverable
+
+#### Scenario: Plugin used as raw submodule (non-skills path)
+- **WHEN** a project includes the plugin repo as a git submodule at a path OTHER than `.claude/skills/`
+- **THEN** the submodule still functions via direct file path references from the instruction file
+- **NOTE** The submodule MUST NOT be placed at `.claude/skills/` due to the trust-gate bug
 
 #### Scenario: Plugin system is not available
 - **WHEN** a developer's coding agent does not support plugins
