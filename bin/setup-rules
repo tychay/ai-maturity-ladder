@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+CLAUDE_PLUGIN_ROOT="${CLAUDE_PLUGIN_ROOT:-$(cd "$(dirname "$0")/.." && pwd)}"
+RULES_SOURCE="${CLAUDE_PLUGIN_ROOT}/rules/maturity-ladder.md"
+PROJECT_DIR="${CLAUDE_PROJECT_DIR:-.}"
+RULES_DIR="${PROJECT_DIR}/.claude/rules"
+LINK_PATH="${RULES_DIR}/aiml-maturity-ladder.md"
+
+if [[ "$(uname -s)" == MINGW* || "$(uname -s)" == CYGWIN* || "$(uname -s)" == MSYS* ]]; then
+  echo "Error: Symlink creation on Windows requires Developer Mode or an elevated prompt."
+  echo "Enable Developer Mode in Settings > For developers, then re-run this command."
+  exit 1
+fi
+
+if [[ ! -f "$RULES_SOURCE" ]]; then
+  echo "Error: Rules source not found at ${RULES_SOURCE}"
+  echo "Is CLAUDE_PLUGIN_ROOT set correctly?"
+  exit 1
+fi
+
+if [[ -L "$LINK_PATH" ]]; then
+  CURRENT_TARGET="$(readlink "$LINK_PATH")"
+  if [[ "$CURRENT_TARGET" == "$RULES_SOURCE" ]]; then
+    echo "Already configured: ${LINK_PATH} → ${RULES_SOURCE}"
+    exit 0
+  fi
+  rm "$LINK_PATH"
+fi
+
+mkdir -p "$RULES_DIR"
+ln -sf "$RULES_SOURCE" "$LINK_PATH"
+echo "Installed: ${LINK_PATH} → ${RULES_SOURCE}"

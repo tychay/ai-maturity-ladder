@@ -4,10 +4,10 @@ A Claude Code plugin that directs AI coding assistants to **graduate work away f
 
 ## What's in this plugin
 
-- **[`CLAUDE-RULES.md`](CLAUDE-RULES.md)** — Operational rules injected into your project's instruction file by the setup skill.
-- **[`assets/ai-maturity-ladder.md`](assets/ai-maturity-ladder.md)** — The full philosophy: ladder levels, Workflow Automation Framework, AI Justification Test, triggers, prescriptions, and examples.
+- **`rules/maturity-ladder.md`** — Operational rules, symlinked into your project's `.claude/rules/` by the setup command.
+- **`skills/understand-ladder/`** — Loads the full philosophy (AI Justification Test, Workflow Automation Framework, ladder levels) into context on demand.
 - **`skills/graduation-suggest/`** — Proactively suggests when repeated patterns are ready to graduate.
-- **`skills/setup/`** — Wires the maturity ladder into your project's instruction file.
+- **`commands/setup.md`** — One-time setup: symlinks the rules into your project's `.claude/rules/`.
 
 ## Installation
 
@@ -21,27 +21,28 @@ claude plugin install aiml
 
 ### After install
 
-Run the setup skill to configure your project:
+Run the setup command to install rules into your project:
 ```
 /aiml:setup
 ```
 
-This detects your instruction file (CLAUDE.md) and adds the reference line automatically.
+This creates a symlink in `.claude/rules/` pointing at the plugin's rules file. Rules auto-load every session.
 
 ### Other coding agents
 
-OpenCode and other agent support is not yet implemented. The setup skill will report this if it detects a non-Claude environment. The underlying files (CLAUDE-RULES.md, assets/) are plain markdown and can be referenced manually from any agent's instruction file.
+OpenCode and other agent support is not yet implemented. The setup command will report this if it detects a non-Claude environment.
 
-## Skills
+## Commands & Skills
 
-| Skill | Description |
-|-------|-------------|
-| `/aiml:setup` | Wire the maturity ladder into your project |
-| `/aiml:graduation-suggest` | Suggest when patterns are ready to graduate |
+| Name | Type | Description |
+|------|------|-------------|
+| `/aiml:setup` | command | Install rules into your project (one-time) |
+| `/aiml:understand-ladder` | skill | Load the full maturity ladder philosophy into context |
+| `/aiml:graduation-suggest` | skill | Suggest when patterns are ready to graduate |
 
 ## How it works
 
-After setup, the AI reads `CLAUDE-RULES.md` at session start for concise operational guidance. When facing ambiguous graduation decisions, it reads the full philosophy in `assets/`. The graduation-suggest skill provides proactive recommendations when it notices repeated patterns.
+After setup, the operational rules auto-load every session via `.claude/rules/`. When facing ambiguous graduation decisions, Claude invokes `/aiml:understand-ladder` for the full philosophy. The graduation-suggest skill provides proactive recommendations when it notices repeated patterns.
 
 ## Development
 

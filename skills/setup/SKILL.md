@@ -1,31 +1,23 @@
 ---
-description: Wire the AI Maturity Ladder into a project's instruction file (CLAUDE.md, AGENTS.md, etc.)
+description: Install the AI Maturity Ladder rules into the current project
+disable-model-invocation: true
+allowed-tools: Bash(setup-rules) AskUserQuestion
 ---
 
 # Setup
 
-Integrate the AI Maturity Ladder rules into the current project. This skill detects the project's coding agent environment and adds the appropriate reference to the instruction file.
+Install the AI Maturity Ladder operational rules into this project.
 
 ## Steps
 
 1. **Detect environment** — check which instruction files exist at the project root:
-   - `CLAUDE.md` → proceed with Claude Code integration
+   - `CLAUDE.md` exists → proceed
    - `AGENTS.md` (without CLAUDE.md) → report "AGENTS.md integration not yet supported" and exit
    - `.opencode/` directory → report "OpenCode integration not yet supported" and exit
-   - None found → ask the user what to do (create CLAUDE.md, or abort)
+   - None found → ask the user if they want to proceed anyway (rules will still load from `.claude/rules/`)
 
-2. **Check idempotency** — search the instruction file for any existing reference to `maturity-ladder/CLAUDE-RULES.md`. If found, report "AI Maturity Ladder is already configured" and exit.
+2. **Confirm with user** — explain that this will create a symlink in `.claude/rules/` pointing at the plugin's rules file. Ask for confirmation before proceeding.
 
-3. **Resolve the path** — determine the relative path from the project root to `CLAUDE-RULES.md` in this plugin's directory. The path depends on how the plugin was installed:
-   - As a project submodule: typically `.claude/skills/aiml/CLAUDE-RULES.md`
-   - Other installations: use the actual path from project root to the plugin's CLAUDE-RULES.md
+3. **Run setup** — execute `setup-rules` to create the symlink.
 
-4. **Propose the addition** — show the user the line that will be added:
-   ```
-   See `<resolved-path>` for AI Maturity Ladder operational rules.
-   ```
-   Ask the user for confirmation before modifying the file.
-
-5. **On approval** — append the reference line to the appropriate section of the instruction file (within an "AI Behavior Rules" section if one exists, otherwise at the end).
-
-6. **On decline** — output the reference line for the user to add manually and exit without modifying any files.
+4. **Report result** — tell the user what was done. If the project's CLAUDE.md has stale references to `.claude/skills/aiml/CLAUDE-RULES.md` or similar, suggest removing them (the rules now auto-load from `.claude/rules/`).

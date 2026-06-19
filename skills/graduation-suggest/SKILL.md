@@ -4,7 +4,7 @@ description: Proactively suggest when a repeated pattern is ready to graduate up
 
 # Graduation Suggest
 
-When you notice a repeated pattern, suggest graduating it per the ladder levels described in `../../assets/ai-maturity-ladder.md`.
+When you notice a repeated pattern, suggest graduating it per the ladder levels. If you need the full philosophy to determine the right graduation level, invoke `/aiml:understand-ladder`.
 
 Look for:
 - Repeated sequences of tool calls across skills or sessions

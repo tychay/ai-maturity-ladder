@@ -1,7 +1,7 @@
 {
   "name": "aiml",
   "displayName": "AI Maturity Ladder",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "AI Maturity Ladder — graduation methodology for AI-assisted development",
   "author": {
     "name": "tychay"
