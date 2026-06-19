@@ -14,4 +14,4 @@ See `assets/ai-maturity-ladder.md` for the full philosophy.
 - **Trigger axis (separate from the ladder):** Once a workflow exists, its invocation can graduate:
   manual → Claude Code hook → system event (cron/fswatch/webhook).
 - Use OpenSpec/SDD when building tools at any level.
-- Feel free to suggest when something is ready to graduate (see `/graduation-suggest`).
+- Feel free to suggest when something is ready to graduate (see `/aiml:graduation-suggest`).

@@ -1,0 +1,10 @@
+{
+  "name": "aiml",
+  "displayName": "AI Maturity Ladder",
+  "version": "1.0.0",
+  "description": "AI Maturity Ladder — graduation methodology for AI-assisted development",
+  "author": {
+    "name": "tychay"
+  },
+  "repository": "https://github.com/tychay/ai-maturity-ladder"
+}

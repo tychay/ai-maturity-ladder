@@ -1,6 +1,6 @@
 # 0001 — ai/ namespace for portable AI methodology submodules
 
-**Status:** Active
+**Status:** Superseded by 0011
 **Date:** 2026-06-10
 
 ## Context
@@ -18,3 +18,4 @@ Any project consuming these packages includes submodules under `ai/`. The namesp
 ---
 
 *Extracted from [[ai-maturity-ladder-modularization]] and `openspec/changes/extract-maturity-ladder-submodule/`, originally decided ~2026-06-10.*
+*Superseded 2026-06-18: the plugin system solves the same distribution problem with an established standard. See ADR-0011.*

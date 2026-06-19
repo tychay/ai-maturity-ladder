@@ -1,36 +1,57 @@
 # AI Maturity Ladder
 
-A portable methodology package for directing AI coding assistants (Claude Code) to **graduate work away from the AI** — reducing token usage, improving precision, and keeping the human in a deliberate practice loop.
+A Claude Code plugin that directs AI coding assistants to **graduate work away from the AI** — reducing token usage, improving precision, and keeping the human in a deliberate practice loop.
 
-## What's in this package
+## What's in this plugin
 
-- **[`CLAUDE-RULES.md`](CLAUDE-RULES.md)** — Operational rules to reference from your project's `CLAUDE.md`. This is what the AI reads at session start.
+- **[`CLAUDE-RULES.md`](CLAUDE-RULES.md)** — Operational rules injected into your project's instruction file by the setup skill.
 - **[`assets/ai-maturity-ladder.md`](assets/ai-maturity-ladder.md)** — The full philosophy: ladder levels, Workflow Automation Framework, AI Justification Test, triggers, prescriptions, and examples.
-- **[`link-map.json`](link-map.json)** — Maps source wikilinks to portable equivalents (used during distillation from the authoritative vault doc).
-- **`skills/graduation-suggest/`** — A skill that prompts the AI to suggest graduation opportunities.
+- **`skills/graduation-suggest/`** — Proactively suggests when repeated patterns are ready to graduate.
+- **`skills/setup/`** — Wires the maturity ladder into your project's instruction file.
 
 ## Installation
 
-1. Add as a git submodule:
-   ```bash
-   git submodule add <repo-url> ai/maturity-ladder
-   ```
+### Claude Code
 
-2. Add to your project's `CLAUDE.md` in the AI Behavior Rules section:
-   ```markdown
-   - **AI Maturity Ladder:** See `ai/maturity-ladder/CLAUDE-RULES.md` for operational rules
-     and `ai/maturity-ladder/assets/ai-maturity-ladder.md` for the full philosophy.
-   ```
+Install from the repo:
+```bash
+claude plugin install tychay/ai-maturity-ladder
+```
 
-3. Initialize the submodule when cloning:
-   ```bash
-   git submodule update --init
-   ```
+Then run the setup skill to configure your project:
+```
+/aiml:setup
+```
+
+This detects your instruction file (CLAUDE.md) and adds the reference line automatically.
+
+### Other coding agents
+
+OpenCode and other agent support is not yet implemented. The setup skill will report this if it detects a non-Claude environment. The underlying files (CLAUDE-RULES.md, assets/) are plain markdown and can be referenced manually from any agent's instruction file.
+
+## Skills
+
+| Skill | Description |
+|-------|-------------|
+| `/aiml:setup` | Wire the maturity ladder into your project |
+| `/aiml:graduation-suggest` | Suggest when patterns are ready to graduate |
 
 ## How it works
 
-The AI reads `CLAUDE-RULES.md` at session start for concise operational guidance. When facing ambiguous graduation decisions, it reads the full philosophy in `assets/`. The `graduation-suggest` skill is auto-discovered by Claude Code and provides proactive graduation recommendations.
+After setup, the AI reads `CLAUDE-RULES.md` at session start for concise operational guidance. When facing ambiguous graduation decisions, it reads the full philosophy in `assets/`. The graduation-suggest skill provides proactive recommendations when it notices repeated patterns.
+
+## Development
+
+For contributors developing this plugin:
+
+```bash
+# Test locally without installing
+claude --plugin-dir ./path/to/ai-maturity-ladder
+
+# Validate the plugin structure
+claude plugin validate ./path/to/ai-maturity-ladder
+```
 
 ## Updating
 
-The authoritative source is the vault document. Changes flow one-way: vault → distillation → this package. Use the `/revise-maturity-ladder` skill (in the parent project, not this submodule) to run the revision loop.
+The authoritative source is the vault document. Changes flow one-way: vault → distillation → this package.
